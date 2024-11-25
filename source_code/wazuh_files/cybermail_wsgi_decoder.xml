@@ -1,0 +1,5 @@
+<decoder name="app-wsgi">
+        <prematch>^[(\d+-\d+-\d+T\d+:\d+:\d+.\d+Z)]</prematch>
+        <regex>^[(\d+-\d+-\d+T\d+:\d+:\d+.\d+Z)] [(\w+)] - [(\w+)] - [(/\w+)] - (\.+)</regex>
+            <order>timestamp,type,location,resource,message</order>
+</decoder>

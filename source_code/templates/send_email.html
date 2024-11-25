@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-center text-primary">✉️ Compose Email</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted">Compose a new email</p>
+    </div>
+    <hr>
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="return validateFiles()">
+        <div class="form-group">
+            <label for="receiver_email">To:</label>
+            <input type="text" class="form-control" id="receiver_email" name="receiver_email" placeholder="username1, username2 or, username1@cybermail.es, username2@cybermail.es" required>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <input type="text" class="form-control" id="subject" name="subject" required>
+        </div>
+        <div class="form-group">
+            <label for="body">Message:</label>
+            <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="attachments">Attach Files:</label>
+            <input type="file" class="form-control-file" id="attachments" name="attachments" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning mt-3">
+            <ul class="mb-0">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="progress mt-3" style="display:none; height: 25px;" id="progressBar">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%;" id="progressBarFill"></div>
+    </div>
+</div>
+
+<script>
+function validateFiles() {
+    var files = document.getElementById('attachments').files;
+    var maxSize = 5 * 1024 * 1024; // 5 MB
+
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].size > maxSize) {
+            alert('The file ' + files[i].name + ' exceeds the maximum allowed size of 5 MB.');
+            return false; // Avoids sending the form
+        }
+    }
+
+    return startLoading();
+}
+
+function startLoading() {
+    var progressBar = document.getElementById("progressBar");
+    var progressBarFill = document.getElementById("progressBarFill");
+
+    progressBarFill.style.width = "0%";
+    progressBarFill.innerText = "0%";
+
+    progressBar.style.display = "block";
+
+    var width = 0;
+    var interval = setInterval(function() {
+        if (width >= 100) {
+            clearInterval(interval);
+        } else {
+            width += 5; // 5% incremento per step
+            progressBarFill.style.width = width + '%';
+            progressBarFill.innerText = width + '%';
+        }
+    }, 100); // Update the progress every 100ms
+
+    // Prevents the user from resubmitting the form during the loading phase
+    return true;
+}
+</script>
+{% endblock %}
+

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-center text-primary">📤 Sent Email Details</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted">Here you can view the full details of this email</p>
+    </div>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0"><strong>Subject:</strong> {{ email.subject }}</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>From:</strong> {{ email.sender_email }}</p>
+            <p><strong>To:</strong> {{ email.receiver_email }}</p>
+            <p><strong>Date:</strong> {{ email.sent_time }}</p>
+            <hr>
+            <h5><strong>Email Content:</strong></h5>
+            <p class="card-text">{{ email.body }}</p>
+
+            {% if email.attachments %}
+                <hr>
+                <h5><strong>Attachments:</strong></h5>
+                <ul class="list-group">
+                    {% for attachment in attachments %}
+                            <a href="{{ url_for('download_attachment', email_id=email.message_id, filename=attachment.name) }}">{{ attachment.name }}</a>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="card-footer text-right">
+            <a href="{{ url_for('sent_items') }}" class="btn btn-outline-success">Back to Sent Items</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

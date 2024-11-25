@@ -1,0 +1,48 @@
+### **Tested Package Versions**
+
+The following versions of `pip` and `apt` packages were tested during the development and validation of the **ZeroToHero Email Server Solution**. These versions represent the most up-to-date releases as of **November 24, 2024**, and have been confirmed to work seamlessly within an Ubuntu 24.04 LTS environment.
+
+#### **Pip Packages**
+- **Flask**: 3.1.0  
+- **psycopg2-binary**: 2.9.10  
+- **Flask-Mail**: 0.10.0  
+- **cryptography**: 43.0.3  
+- **Werkzeug**: 3.1.3  
+- **aiosmtpd**: 1.4.6  
+- **Faker**: 33.0.0  
+- **scikit-learn**: 1.5.2  
+- **nltk**: 3.9.1  
+- **requests**: 2.32.3  
+- **joblib**: 1.4.2  
+
+#### **APT Packages**
+- **apache2**: 2.4.58-1ubuntu8.5  
+- **apache2-bin**: 2.4.58-1ubuntu8.5  
+- **apache2-data**: 2.4.58-1ubuntu8.5  
+- **apache2-utils**: 2.4.58-1ubuntu8.5  
+- **libapache2-mod-wsgi-py3**: 5.0.0-1build2  
+- **pipenv**: 2023.12.1+ds-1  
+- **gunicorn**: 20.1.0-6  
+- **python3-gunicorn**: 20.1.0-6  
+- **nmap**: 7.94+git20230807.3be01efb1+dfsg-3build2  
+- **nmap-common**: 7.94+git20230807.3be01efb1+dfsg-3build2  
+- **python3-pip**: 24.0+dfsg-1ubuntu1.1  
+- **python3-pip-whl**: 24.0+dfsg-1ubuntu1.1  
+- **postgresql**: 16+257build1.1  
+- **postgresql-16**: 16.4-0ubuntu0.24.04.2  
+- **postgresql-client-16**: 16.4-0ubuntu0.24.04.2  
+- **postgresql-client-common**: 257build1.1  
+- **postgresql-common**: 257build1.1  
+- **bind9**: 1:9.18.28-0ubuntu0.24.04.1  
+- **bind9-dnsutils**: 1:9.18.28-0ubuntu0.24.04.1  
+- **bind9-doc**: 1:9.18.28-0ubuntu0.24.04.1  
+- **bind9-host**: 1:9.18.28-0ubuntu0.24.04.1  
+- **bind9-libs**: 1:9.18.28-0ubuntu0.24.04.1  
+- **bind9-utils**: 1:9.18.28-0ubuntu0.24.04.1  
+- **dnsutils**: 1:9.18.28-0ubuntu0.24.04.1  
+- **dovecot-imapd**: 1:2.3.21+dfsg1-2ubuntu6  
+- **dovecot-pop3d**: 1:2.3.21+dfsg1-2ubuntu6  
+- **dovecot-pgsql**: 1:2.3.21+dfsg1-2ubuntu6  
+- **postfix**: 3.8.6-1build2  
+
+These package versions have been rigorously tested and verified to work without issues, ensuring compatibility and stability in the specified environment. Using these versions is recommended to replicate the tested setup accurately.

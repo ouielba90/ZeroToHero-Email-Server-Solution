@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+    <h2>Sign Up</h2>
+</div>
+<form method="post">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required oninput="validateName()">
+        <p id="name-error" class="text-danger" style="display: none;">The name contains invalid characters or is too short.</p>
+    </div>
+    <div class="form-group">
+        <label for="email">Username:</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="email" name="email" required oninput="validateEmail()">
+            <div class="input-group-append">
+                <span class="input-group-text">@CyberMail_Domain</span>
+            </div>
+        </div>
+        <p id="email-error" class="text-danger" style="display: none;">The username contains invalid characters or is too short.</p>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" required oninput="validatePassword()">
+        <ul id="password-requirements" class="list-unstyled">
+            <li id="length" class="text-danger">Must be at least 8 characters long</li>
+            <li id="uppercase" class="text-danger">Must contain at least one uppercase letter</li>
+            <li id="lowercase" class="text-danger">Must contain at least one lowercase letter</li>
+            <li id="number" class="text-danger">Must contain at least one number</li>
+            <li id="special" class="text-danger">Must contain at least one special character</li>
+            <li id="match" class="text-danger">Passwords must match</li>
+        </ul>
+    </div>
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required oninput="validatePassword()">
+    </div>
+    <button type="submit" class="btn btn-primary" id="register-btn" disabled>Sign Up</button>
+    <a href="{{ url_for('login') }}" class="btn btn-primary">Log In</a>
+</form>
+
+<p></p>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-warning" role="alert">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<script>
+	const RESERVED_USERNAMES = ["root", "admin", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "operator", "nobody", "systemd", "system", "mysql", "postgres", "www-data"];
+
+	function validateName() {
+    const name = document.getElementById('name').value;
+    const nameError = document.getElementById('name-error');
+    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+
+    const containsReservedSubstring = RESERVED_USERNAMES.some(reserved => name.includes(reserved));
+
+    if (nameRegex.test(name) && !containsReservedSubstring && name.length >= 3) {
+        nameError.style.display = 'none';
+    } else {
+        nameError.style.display = 'block';
+    }
+
+    validateForm();  // No se pasa 'valid'
+}
+
+function validateEmail() {
+    const email = document.getElementById('email').value;
+    const emailError = document.getElementById('email-error');
+    const emailRegex = /^[a-zA-Z0-9._-]+$/;
+
+    const containsReservedSubstring = RESERVED_USERNAMES.some(reserved => email.includes(reserved));
+
+    if (emailRegex.test(email) && !containsReservedSubstring && email.length >= 3) {
+        emailError.style.display = 'none';
+    } else {
+        emailError.style.display = 'block';
+    }
+
+    validateForm();  // No se pasa 'valid'
+}
+
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+
+    const lengthRequirement = document.getElementById('length');
+    const uppercaseRequirement = document.getElementById('uppercase');
+    const lowercaseRequirement = document.getElementById('lowercase');
+    const numberRequirement = document.getElementById('number');
+    const specialRequirement = document.getElementById('special');
+    const matchRequirement = document.getElementById('match');
+
+    let valid = true;
+
+    // Verificar longitud
+    if (password.length >= 8) {
+        lengthRequirement.classList.remove('text-danger');
+        lengthRequirement.classList.add('text-success');
+    } else {
+        lengthRequirement.classList.remove('text-success');
+        lengthRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    // Verificar mayúscula
+    if (/[A-Z]/.test(password)) {
+        uppercaseRequirement.classList.remove('text-danger');
+        uppercaseRequirement.classList.add('text-success');
+    } else {
+        uppercaseRequirement.classList.remove('text-success');
+        uppercaseRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    // Verificar minúscula
+    if (/[a-z]/.test(password)) {
+        lowercaseRequirement.classList.remove('text-danger');
+        lowercaseRequirement.classList.add('text-success');
+    } else {
+        lowercaseRequirement.classList.remove('text-success');
+        lowercaseRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    // Verificar número
+    if (/\d/.test(password)) {
+        numberRequirement.classList.remove('text-danger');
+        numberRequirement.classList.add('text-success');
+    } else {
+        numberRequirement.classList.remove('text-success');
+        numberRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    // Verificar carácter especial
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        specialRequirement.classList.remove('text-danger');
+        specialRequirement.classList.add('text-success');
+    } else {
+        specialRequirement.classList.remove('text-success');
+        specialRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    // Verificar coincidencia de contraseñas
+    if (password === confirmPassword) {
+        matchRequirement.classList.remove('text-danger');
+        matchRequirement.classList.add('text-success');
+    } else {
+        matchRequirement.classList.remove('text-success');
+        matchRequirement.classList.add('text-danger');
+        valid = false;
+    }
+
+    validateForm(valid);
+}
+
+function validateForm(valid = true) {
+    const registerBtn = document.getElementById('register-btn');
+    const nameValid = document.getElementById('name-error').style.display === 'none';
+    const emailValid = document.getElementById('email-error').style.display === 'none';
+    const passwordValid = document.querySelectorAll('#password-requirements .text-danger').length === 0;
+
+    if (nameValid && emailValid && valid && passwordValid) {
+        registerBtn.disabled = false;
+    } else {
+        registerBtn.disabled = true;
+    }
+}
+
+</script>
+{% endblock %}
+
