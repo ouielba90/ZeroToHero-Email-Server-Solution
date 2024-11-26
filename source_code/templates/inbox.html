@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-center text-primary">📬 Inbox</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted">Here you can manage your emails</p>
+        <button id="refresh-btn" class="btn btn-success">🔄 Update</button>
+    </div>
+    <hr>
+
+    {% if emails %}
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Sender</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Date and Time</th>
+                        <th scope="col">Attachments</th>
+                        <th scope="col">Security Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in emails %}
+                        <tr>
+                            <td class="align-middle">{{ email.sender_email }}</td>
+                            <td class="align-middle">{{ email.encrypted_subject }}</td>
+                            <td class="align-middle">{{ email.sent_time }}</td>
+                            <td class="align-middle text-center">
+                                {% if email.has_attachments %}
+                                    <span class="text-primary">📎</span>
+                                {% else %}
+                                    <span class="text-muted">No</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-center" style="
+                                {% if email.security_status == 'safe' %}
+                                    background-color: #d4edda;
+                                    color: #155724;
+                                {% elif email.security_status == 'unsafe' %}
+                                    background-color: #f8d7da;
+                                    color: #721c24;
+                                {% endif %}
+                                padding: 8px;
+                                border-radius: 5px;
+                            ">
+                                {% if email.security_status == 'safe' %}
+                                    Seguro
+                                {% elif email.security_status == 'unsafe' %}
+                                    No seguro
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-center">
+                                <a href="{{ url_for('view_email', email_id=email.message_id) }}">
+                                    <button class="btn btn-outline-primary btn-sm">👁️ Ver</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            You have no emails.
+        </div>
+    {% endif %}
+</div>
+
+<script>
+document.getElementById('refresh-btn').addEventListener('click', function() {
+    location.reload();
+});
+</script>
+{% endblock %}
+

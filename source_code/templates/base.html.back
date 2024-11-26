@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title_server</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #sidebar {
+            width: 300px;
+            height: 100vh;
+            background-color: #343a40;
+            padding-top: 20px;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        #sidebar a {
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 18px;
+            border-bottom: 1px solid #495057;
+        }
+        #sidebar a:hover {
+            background-color: #495057;
+        }
+        .container {
+            padding: 20px;
+            flex: 1;
+        }
+        .container-authenticated {
+            margin-left: 300px;
+        }
+        .navbar-brand {
+            margin: 0;
+            font-size: 18px;
+        }
+        h2 {
+            display: inline-block;
+            margin-top: 0;
+        }
+        #refresh-btn {
+            float: right;
+            margin-top: 5px;
+        }
+        .logo-container {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .logo-container img {
+            max-width: 40%;
+            height: auto;
+        }
+        .logo-container h1 {
+            font-size: 1.75rem;
+	    margin-top: 10px;
+            color: #ffffff; 
+            font-family: 'Roboto', sans-serif;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 40px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            text-align: left;
+            color: #6c757d;
+            margin-bottom: 20px;
+            margin-left: 0px;
+        }
+
+        .login-form .form-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .login-form .form-control {
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-link {
+            display: block;
+            text-align: center;
+            color: #007bff;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .alert-warning {
+            font-size: 14px;
+            color: #856404;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    {% if 'user_name' in session and request.endpoint != 'login' %}
+        <div id="sidebar">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='email.png') }}" alt="CyberMail Logo">
+            <h1>CyberMail</h1>
+        </div>
+            <a class="navbar-brand" href="{{ url_for('inbox') }}">Inbox</a>
+            <a class="navbar-brand" href="{{ url_for('send_email') }}">Send Email</a>
+            <a class="navbar-brand" href="{{ url_for('sent_items') }}">Sent Items</a>
+            <form action="{{ url_for('logout') }}" method="post" style="padding: 15px;">
+                <button type="submit" class="btn btn-danger btn-block">Log Out</button>
+            </form>
+            <div class="mt-3 text-center">
+                <p class="text-white" style="font-size: 0.875rem;">Authenticated as {{ session['user_name'] }} ({{ session['user_email'] }}@CyberMail_Domain)</p>
+                <p class="text-white" style="font-size: 0.875rem;">IP: {{ session['IP'] }}</p>
+
+            </div>
+        </div>
+        <div class="container container-authenticated">
+    {% else %}
+        <div class="container">
+    {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script>
+        let currentlyVisibleEmailId = null;
+
+        function toggleEmailContent(emailId) {
+            if (currentlyVisibleEmailId && currentlyVisibleEmailId !== emailId) {
+                document.getElementById('email-content-' + currentlyVisibleEmailId).style.display = 'none';
+            }
+            
+            var contentRow = document.getElementById('email-content-' + emailId);
+            
+            if (contentRow.style.display === 'none' || contentRow.style.display === '') {
+                contentRow.style.display = 'table-row';
+                currentlyVisibleEmailId = emailId;
+            } else {
+                contentRow.style.display = 'none';
+                currentlyVisibleEmailId = null;
+            }
+        }
+    </script>
+</body>
+</html>
+

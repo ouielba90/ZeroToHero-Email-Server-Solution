@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-center text-primary">📤 Sent Emails</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted">Here you can view your sent emails</p>
+        <button id="refresh-btn" class="btn btn-success">🔄 Update</button>
+    </div>
+    <hr>
+
+    {% if sent_emails %}
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Recipient</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Date and Time</th>
+                        <th scope="col">Attachments</th>
+			<th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in sent_emails %}
+                            <td class="align-middle">{{ email.receiver_email }}</td>
+                            <td class="align-middle">{{ email.encrypted_subject }}</td>
+                            <td class="align-middle">{{ email.sent_time }}</td>
+                            <td class="align-middle text-center">
+                                {% if email.has_attachments %}
+                                    <span class="text-primary">📎</span>
+                                {% else %}
+                                    <span class="text-muted">No</span>
+                                {% endif %}
+                            </td>
+			    <td class="align-middle text-center">
+                                <a href="{{ url_for('view_sent_email', email_id=email.message_id) }}">
+                                    <button class="btn btn-outline-primary btn-sm">👁️  View</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            You have no sent emails.
+        </div>
+    {% endif %}
+</div>
+
+<script>
+document.getElementById('refresh-btn').addEventListener('click', function() {
+    location.reload();
+});
+</script>
+
+<script>
+function toggleEmailContent(emailId) {
+    var contentRow = document.getElementById('email-content-' + emailId);
+    if (contentRow.style.display === 'none') {
+        contentRow.style.display = 'table-row';
+    } else {
+        contentRow.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
+

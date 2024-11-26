@@ -1,0 +1,36 @@
+<group name="syslog">
+    <rule id="100100" level="0">
+        <decoded_as>app-wsgi</decoded_as>
+        <description>Reading WSGI log</description>
+    </rule>
+
+    <rule id="100101" level="14">
+        <if_sid>100100</if_sid>
+        <field name="message">numerous login attempts</field>
+        <description>Cybermail.es: Brute force detected</description>
+    </rule>
+
+    <rule id="100102" level="8">
+        <if_sid>100100</if_sid>
+        <field name="message">Attempted access to registration from a suspicious IP</field>
+        <description>Cybermail.es: Suspicious registry access detected</description>
+    </rule>
+
+    <rule id="100103" level="8">
+        <if_sid>100100</if_sid>
+        <field name="message">Login attempt from a suspicious IP</field>
+        <description>Cybermail.es: Suspicious login attempt detected</description>
+    </rule>
+
+    <rule id="100104" level="12">
+        <if_sid>100100</if_sid>
+        <field name="message">malicious file</field>
+        <description>Cybermail.es: Malicious attachment detected</description>
+    </rule>
+
+    <rule id="100105" level="12">
+        <if_sid>100100</if_sid>
+        <field name="message">reverse shell</field>
+        <description>Cybermail.es: Malicious attachment with reverse shell detected</description>
+    </rule>
+</group>
