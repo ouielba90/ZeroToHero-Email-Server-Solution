@@ -19,9 +19,10 @@ Before proceeding with the installation, ensure the operating system is updated 
 sudo apt update -y && sudo apt upgrade -y
 ```
 
-It is recommended to perform the installation on **Ubuntu Server** to ensure service compatibility (**tested on version 24.04**). Additionally, a **PostgreSQL service** must be installed and running, as it is used to store the server's data.
-
 > **Note:** This step is optional since the `deploy_mail_server.sh` script includes system updates during the installation process.
+
+
+It is recommended to perform the installation on **Ubuntu Server** to ensure service compatibility (**tested on version 24.04**). Additionally, a **PostgreSQL service** must be installed and running, as it is used to store the server's data.
 
 > **Important:** Ensure that you provide a valid API key for VirusTotal in the `virustotal_checker.py` file before running the `deploy_mail_server.sh` script. This is necessary for proper functionality of the virus-checking component.
 
